@@ -10,5 +10,3 @@ while read -r vgname lvname lvpath lvsize; do ismounted=$(findmnt "$lvpath" -ota
 
 echo -e "\nNFS Mounts:" 
 grep nfs /etc/fstab | grep -v "^#"
-echo ""
-
