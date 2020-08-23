@@ -1,0 +1,16 @@
+RHEL / Cent
+### Requires EPEL
+yum install clamav clamav-update -y
+sed -i "/^Example/d" /etc/freshclam.conf
+Ubuntu
+apt-get update
+apt-get install clamav -y
+
+Active Usage
+screen
+freshclam
+clamscan --infected --recursive /var/www --log=/var/log/clamscan.log
+CTRL+A+D
+screen -ls
+
+
