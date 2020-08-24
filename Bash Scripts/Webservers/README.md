@@ -1,3 +1,5 @@
+These were developed at various points in my career during my time working for an MSP in a never ending quest to get to logs and analyze them as fast as possible. 
+
 # Access Log Finder:
 
 >pidof -s httpd -s nginx -s apache -s apache2| tr -d '\n' | xargs -d " " -I pid find /proc/pid/fd -type l -exec  readlink -f {} \; | grep -E "access.*log" | sort | uniq
