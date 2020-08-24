@@ -1,0 +1,4 @@
+#One time I was curious if I could write a script to automatically find the injection point of a comprimised file by parsing sophos anti-virus logs,
+#determining the pid of a running webserver, and identifying the initial POST request against the infected file.
+#It worked.
+for i in $( grep -o "/.*php" /opt/sophos-av/log/savd.log | awk '{print $NF}' FS=/); do grep "$i" $(lsof -wp $(echo "$(pidof apache2 -s ; pidof httpd -s ; pidof nginx -s)" | tr '\n' ',') | awk '/access.*log/ {print $9"*"}' | sort | uniq ) | grep POST | head -1 ; done && for i in $(awk '{print $NF}' FS=/ /opt/sophos-av/log/sav-protect.log | awk '{print $1}' | sort | uniq | grep ".*php"); do grep "$i" $(lsof -wp $(echo "$(pidof apache2 -s ; pidof httpd -s ; pidof nginx -s)" | tr '\n' ',') | awk '/access.*log/ {print $9"*"}' | sort | uniq ) ; done | grep POST | head -1
