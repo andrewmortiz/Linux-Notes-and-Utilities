@@ -54,3 +54,11 @@ ALL=$(awk '/POST|GET/ && !/Monitor|dummy connection|server-status|127.0.0.1|loca
 ```bash
 for semid in \`ipcs -s | grep apacheusername | cut -f2 -d “ “\` ; do ipcrm -s $semid ; done
 ```
+## Open Connections
+```bash
+netstat -plnant | grep ":80" | grep -i established
+netstat -plnant | grep ":443" | grep -i established
+netstat -plant|grep :80|awk '{print $5}'|cut -d: -f1|sort|uniq -c|sort -n
+netstat -plant|grep :443|awk '{print $5}'|cut -d: -f1|sort|uniq -c|sort -n
+```
+
