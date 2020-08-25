@@ -38,8 +38,9 @@ These were developed at various points in my career during my time working for a
 
 ## Older Alert Panther one liner 
 <code>
-> ALL=$(awk '/POST|GET/ && !/Monitor|dummy connection|server-status|127.0.0.1|localhost|^  -/  {print $0}' <(grep -P '^\d+(\.\d+){3}\s' $(lsof | awk '/httpd|nginx|apache2/ && /access/ && /log/ && !a[$9]++ {print $9}' 2>/dev/null) ) | awk '{print $1}' | awk -F":" '{print $2}' | sort | uniq -c | sort -nr | head -25) && IPS=$(awk '{print $2}' <<< "$ALL" | tr -d ,) &&  COUNTRY=$(for i in $(echo "$IPS"); do tmpwho=$(whois $i) && tmpwhoflag=0 && if [[ "$tmpwho" =~ .*IANA.* ]]; then echo "Private" && tmpwhoflag=1; fi && if ( [[ $(grep -ic country "$tmpwho" 2>&1) == 0 ]] && [ "$tmpwhoflag" -eq 0 ]); then echo "Unknown" && tmpwhoflag=1 ; fi && if [[ "$tmpwhoflag" -eq 0 ]]; then grep -i country <(echo "$tmpwho") 2>&1 | tail -1 | awk '{print $2}' && tmpwhoflag=1; fi && if [[ "$tmpwhoflag" -eq 0 ]]; then echo "Unknown"; fi; done) && paste -d " " <(echo "$COUNT") <(echo "$IPS") <(echo "$COUNTRY") | column -t
+ALL=$(awk '/POST|GET/ && !/Monitor|dummy connection|server-status|127.0.0.1|localhost|^  -/  {print $0}' <(grep -P '^\d+(\.\d+){3}\s' $(lsof | awk '/httpd|nginx|apache2/ && /access/ && /log/ && !a[$9]++ {print $9}' 2>/dev/null) ) | awk '{print $1}' | awk -F":" '{print $2}' | sort | uniq -c | sort -nr | head -25) && IPS=$(awk '{print $2}' <<< "$ALL" | tr -d ,) &&  COUNTRY=$(for i in $(echo "$IPS"); do tmpwho=$(whois $i) && tmpwhoflag=0 && if [[ "$tmpwho" =~ .*IANA.* ]]; then echo "Private" && tmpwhoflag=1; fi && if ( [[ $(grep -ic country "$tmpwho" 2>&1) == 0 ]] && [ "$tmpwhoflag" -eq 0 ]); then echo "Unknown" && tmpwhoflag=1 ; fi && if [[ "$tmpwhoflag" -eq 0 ]]; then grep -i country <(echo "$tmpwho") 2>&1 | tail -1 | awk '{print $2}' && tmpwhoflag=1; fi && if [[ "$tmpwhoflag" -eq 0 ]]; then echo "Unknown"; fi; done) && paste -d " " <(echo "$COUNT") <(echo "$IPS") <(echo "$COUNTRY") | column -t
 </code>
+  
 ## Apache Semaphores
 <code>
 > for semid in `ipcs -s | grep apacheusername | cut -f2 -d “ “` ; do ipcrm -s $semid ; done
