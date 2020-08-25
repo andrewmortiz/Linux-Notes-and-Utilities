@@ -1,0 +1,6 @@
+#TO DO, uldate this to just take input
+strFs='/dev/which/one';
+tune2fs -l $strFs | grep -E '^Block count:|^Reserved block count:|^Last mounted on:';
+intTotalBlocks=$(tune2fs -l $strFs | grep -E '^Block count:' | awk '{print $3'});
+intReserveBlocks=$(tune2fs -l $strFs | grep -E '^Reserved block count:' | awk '{print $4'});
+echo "[b]Reserve = $(echo "scale=4; $intReserveBlocks * 100  / $intTotalBlocks" | bc)%[/b]";
