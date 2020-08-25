@@ -1,0 +1,135 @@
+    SELECT @@key_buffer_size / 1024 / 1024 as "key_buffer_size (MB)",
+
+          @@query_cache_size / 1024 / 1024 as "query_cache_size (MB)",
+
+          @@innodb_buffer_pool_size / 1024 / 1024 as "innodb_buffer_pool_size (MB)",
+
+          @@innodb_additional_mem_pool_size / 1024 / 1024 as "innodb_additional_mem_pool_size (MB)",
+
+          @@innodb_log_buffer_size / 1024 / 1024 as "innodb_log_buffer_size (MB)",
+
+          @@tmp_table_size / 1024 / 1024 as "tmp_table_size (MB)",
+
+          @@read_buffer_size / 1024 / 1024 as "read_buffer_size (MB)",
+
+          @@read_rnd_buffer_size / 1024 / 1024 as "read_rnd_buffer_size (MB)",
+
+          @@sort_buffer_size / 1024 / 1024 as "sort_buffer_size (MB)",
+
+          @@join_buffer_size / 1024 / 1024 as "join_buffer_size (MB)",
+
+          @@binlog_cache_size / 1024 / 1024 as "binlog_cache_size (MB)",
+
+          @@thread_stack / 1024 / 1024 as "thread_stack (MB)",
+
+          
+
+          (@@key_buffer_size +
+
+          @@query_cache_size +
+
+          @@innodb_buffer_pool_size +
+
+          @@innodb_additional_mem_pool_size +
+
+          @@innodb_log_buffer_size +
+
+          @@tmp_table_size) / 1024 / 1024 as "Base MB",
+
+     
+
+          @@max_connections,
+
+     
+
+          (@@read_buffer_size +
+
+          @@read_rnd_buffer_size +
+
+          @@sort_buffer_size +
+
+          @@join_buffer_size +
+
+          @@binlog_cache_size +
+
+          @@thread_stack) / 1024 / 1024 as "MB per connection",
+
+     
+
+          ((@@read_buffer_size +
+
+          @@read_rnd_buffer_size +
+
+          @@sort_buffer_size +
+
+          @@join_buffer_size +
+
+          @@binlog_cache_size +
+
+          @@thread_stack) * @@max_connections) / 1024 / 1024 as "Max MB for all connections",
+
+     
+
+          (((@@read_buffer_size +
+
+          @@read_rnd_buffer_size +
+
+          @@sort_buffer_size +
+
+          @@join_buffer_size +
+
+          @@binlog_cache_size +
+
+          @@thread_stack) * @@max_connections) +
+
+          (@@key_buffer_size +
+
+          @@query_cache_size +
+
+          @@innodb_buffer_pool_size +
+
+          @@innodb_additional_mem_pool_size +
+
+          @@innodb_log_buffer_size +
+
+          @@tmp_table_size)) / 1024 / 1024 / 1024 as "Max GB total"
+
+     
+
+          \G
+
+     
+
+    SELECT table_schema 'database',
+
+           engine,
+
+           concat( round( sum( data_length ) / ( 1024 *1024 ) , 2 ) , 'M' ) 'data size',
+
+           concat( round( sum( index_length ) / ( 1024 *1024 ) , 2 ) , 'M' ) 'index size'
+
+    FROM information_schema.TABLES
+
+    WHERE ENGINE=('MyISAM' || 'InnoDB' )
+
+    GROUP BY table_schema, engine;
+
+     
+
+    SELECT engine,
+
+           concat( round( sum( data_length ) / ( 1024 *1024 ) , 2 ) , 'M' ) 'data size',
+
+           concat( round( sum( index_length ) / ( 1024 *1024 ) , 2 ) , 'M' ) 'index size'
+
+    FROM information_schema.TABLES
+
+    WHERE ENGINE=('MyISAM' || 'InnoDB' )
+
+    GROUP BY engine;
+
+     
+
+    show status like 'qcache_hits';
+
+    show status like 'com_select';
