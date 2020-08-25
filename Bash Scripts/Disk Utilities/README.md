@@ -22,3 +22,7 @@ for i in $(mount | grep -Eiv 'type tmpfs|type cgroup|type mqueue|type debug|type
   echo "[b]Reserve = $(echo "scale=4; $intReserveBlocks * 100  / $intTotalBlocks" | bc)%[/b]";
 done;
 ```
+## Partition List
+```bash
+for i in $(lsblk -a | grep -vE '^fd|^sr' | awk '$0 ~ /disk/ {print $1}'); do echo -e "\n [b] ~~~~~ Checking /dev/$i ~~~~~ [/b]" ; echo -e "\nTotal disk size: $(( $(blockdev --getsize64  /dev/$i) / 1024 / 1024))MB\n" ; parted -s /dev/$i print ; done
+```
