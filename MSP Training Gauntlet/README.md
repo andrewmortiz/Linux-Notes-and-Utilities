@@ -1,3 +1,8 @@
+    I wrote this to give to newer admins / admins unfamiliar with the craziness that managed hosting can be a foundation to work from.
+    
+    
+    
+    
     Spin up a Cloud Load Balancer, two web servers( web01 and web02 ), and two database servers ( db01 and db02 ).
         Utilize Cloud Servers, not Cloud Database instances.
     Point DNS or your /etc/hosts file to web01.
