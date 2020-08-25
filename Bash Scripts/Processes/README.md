@@ -20,3 +20,7 @@ find -maxdepth 2 -name stat -exec cat {} \; | awk '{print$1,$2,$3}' | grep D
 ```bash
 find -maxdepth 2 -name stat -exec cat {} \; | awk '{print$1,$2,$3}' | grep D | wc -l
 ```
+## Strace Magic
+```bash
+$(ps -efww|grep http|grep -v root | awk '{print $2}'|tr '\n' ' '|sed -e 's/ / -p /g' | sed -e 's/^/strace -eopen,write,read,accept -s10000 -o strace.log -t -ff -p /' | sed -e 's/-p $//')
+```
