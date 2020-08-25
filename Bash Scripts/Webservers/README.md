@@ -25,9 +25,8 @@ These were developed at various points in my career during my time working for a
 
 
 ## Filter IP addresses from a file ( in list form from file named ips ):
-```bash
-set +H;ips=$(awk 'NF' ips | tr '\n' '|' | sed 's/|$//' | tee); eval "awk '!/"${ips}"|^$/ {print}' file"
-```
+> set +H;ips=$(awk 'NF' ips | tr '\n' '|' | sed 's/|$//' | tee); eval "awk '!/"${ips}"|^$/ {print}' file"
+
 
 ## DDOS Mitigation, filter out already blocked IPs
 > set +H;ips=$(awk 'NF' ips | tr '\n' '|' | sed 's/|$//' | tee); eval "awk '!/"${ips}"|^$/ {print}' /var/log/httpd/example.com-access.log" | awk '{print $1, $7}' | sort | uniq -c |sort -nr |head
