@@ -1,0 +1,4 @@
+sudo swapoff -v /swapfile
+sed 's|/swapfile swap swap defaults 0 0||g' /etc/fstab
+#sed -i 's|/swapfile swap swap defaults 0 0||g' /etc/fstab
+sudo rm /swapfile
